@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Loop 10 times with for
+
+f=$(ls)
+for i in $f
+do
+	echo "$i" | cut -d '-' -f2
+done
