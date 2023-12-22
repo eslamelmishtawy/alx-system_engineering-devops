@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # pid
 
-echo $$
+ps -afux
