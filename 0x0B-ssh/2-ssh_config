@@ -27,7 +27,7 @@ Host *
 #   GSSAPIDelegateCredentials no
 #   GSSAPIKeyExchange no
 #   GSSAPITrustDNS no
-#   BatchMode no
+    BatchMode yes
 #   CheckHostIP yes
 #   AddressFamily any
 #   ConnectTimeout 0
