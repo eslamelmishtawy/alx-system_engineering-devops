@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# funtion to display information about a subdomain
+display_info() {
+    local domain=$1
+    local subdomain=$2
+
+    # Use dig command followed by grep to extract A record from the ANSWER SECTION
+    local record_info=$(dig $subdomain.$domain | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{print $5}')
+    
+    if [[ -z "$record_info" ]]; then
+        echo "The subdomain ${subdomain} does not have an A record or does not exist."
+    else
+        echo "The subdomain ${subdomain} is a A record and points to ${record_info}"
+    fi
+}
+
+# Check for at least one argument
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 domain [subdomain]"
+    exit 1
+fi
+
+domain=$1
+subdomain=$2
+
+# If only domain is provided
+if [ -z "$subdomain" ]; then
+    # Predefined subdomains array
+    subdomains=("www" "lb-01" "web-01" "web-02")
+    # Loop through and display info for each
+    for sd in "${subdomains[@]}"; do
+        display_info $domain $sd
+    done
+else
+    # Display info for specified subdomain
+    display_info $domain $subdomain
+fi
