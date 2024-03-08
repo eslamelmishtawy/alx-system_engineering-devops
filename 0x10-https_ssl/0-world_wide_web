@@ -18,25 +18,23 @@ display_info() {
     fi
 }
 
-# Check for at least one argument
-if [ $# -lt 1 ]; then
-    echo "Usage: $0 domain [subdomain]"
+# Ensure domain and subdomain are provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <domain> [subdomain]"
+    echo "Example: $0 example.com www"
     exit 1
 fi
 
 domain="$1"
 subdomain="$2"
 
-# If only domain is provided
-if [ -z "$subdomain" ]; then
-    # Predefined subdomains array
+# If a subdomain is specified, display its info. Otherwise, show info for a list of common subdomains.
+if [ -n "$subdomain" ]; then
+    display_info "$domain" "$subdomain"
+else
+    # Default list of subdomains to check if only domain is provided
     declare -a subdomains=("www" "lb-01" "web-01" "web-02")
-    # Loop through and display info for each
     for sd in "${subdomains[@]}"; do
         display_info "$domain" "$sd"
     done
-else
-    # Display info for specified subdomain
-    display_info "$domain" "$subdomain"
 fi
-
