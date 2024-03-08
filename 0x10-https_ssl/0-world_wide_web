@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
+#!/bin/bash
 
-# funtion to display information about a subdomain
+# Function to display information about a subdomain
 display_info() {
-    local domain=$1
-    local subdomain=$2
+    local domain="$1"
+    local subdomain="$2"
+    local record_info
 
-    # Use dig command followed by grep to extract A record from the ANSWER SECTION
-    local record_info=$(dig $subdomain.$domain | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{print $5}')
-    
+    # Separately declare and assign to avoid masking return values
+    # Properly quote variables to prevent globbing and word splitting
+    record_info=$(dig "$subdomain.$domain" | grep -A1 "ANSWER SECTION:" | tail -n1 | awk '{print $5}')
+
     if [[ -z "$record_info" ]]; then
-        echo "The subdomain ${subdomain} does not have an A record or does not exist."
+        echo "The subdomain $subdomain does not have an A record or does not exist."
     else
-        echo "The subdomain ${subdomain} is a A record and points to ${record_info}"
+        echo "The subdomain $subdomain is an A record and points to $record_info"
     fi
 }
 
@@ -21,18 +24,19 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-domain=$1
-subdomain=$2
+domain="$1"
+subdomain="$2"
 
 # If only domain is provided
 if [ -z "$subdomain" ]; then
     # Predefined subdomains array
-    subdomains=("www" "lb-01" "web-01" "web-02")
+    declare -a subdomains=("www" "lb-01" "web-01" "web-02")
     # Loop through and display info for each
     for sd in "${subdomains[@]}"; do
-        display_info $domain $sd
+        display_info "$domain" "$sd"
     done
 else
     # Display info for specified subdomain
-    display_info $domain $subdomain
+    display_info "$domain" "$subdomain"
 fi
+
