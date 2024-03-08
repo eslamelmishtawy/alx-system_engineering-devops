@@ -12,9 +12,9 @@ display_info() {
     record_info=$(dig "$subdomain.$domain" | grep -A1 "ANSWER SECTION:" | tail -n1 | awk '{print $5}')
 
     if [[ -z "$record_info" ]]; then
-        echo "The subdomain $subdomain does not have an A record or does not exist."
+        echo "The subdomain $subdomain does not have a A record or does not exist."
     else
-        echo "The subdomain $subdomain is an A record and points to $record_info"
+        echo "The subdomain $subdomain is a A record and points to $record_info"
     fi
 }
 
