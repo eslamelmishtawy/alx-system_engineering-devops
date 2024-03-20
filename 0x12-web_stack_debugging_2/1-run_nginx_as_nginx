@@ -5,4 +5,6 @@ NGINX_CONF='/etc/nginx/sites-available/default'
 NGINX_USER_CONF='/etc/nginx/nginx.conf'
 sed -i "s/80/8080/g" $NGINX_CONF
 sed -i "s/#user www-data/user nginx/" $NGINX_USER_CONG
+chmod 644 /etc/nginx/nginx.conf
+pkill apache2
 sudo -u nginx service nginx start
