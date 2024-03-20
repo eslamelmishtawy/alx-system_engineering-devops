@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# nginx user
+NGINX_CONF='/etc/nginx/sites-available/default'
+NGINX_USER_CONF='/etc/nginx/nginx.conf'
+sed -i 's/listen 80;/listen 8080;/g' $NGINX_CONF
+sed -i 's/#user nginx;/user nginx;/g' $NGINX_USER_CONF
+service nginx restart
